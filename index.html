@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .content{
+            width:600px;
+            height:50px;
+            display:flex;
+            justify-content:space-between;
+        }
+        .hide {
+            display: none;
+        }
+        .box{
+            width:150px;
+            height:50px;
+            line-height: 50px;
+            text-align: center;
+            background:#108EE9;
+            position:relative;
+        }
+        .stop{
+            width: 120px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: #ccc;
+        }
+        .left{
+            display:block;
+            width:18px;
+            border-top:25px solid #108EE9;
+            border-bottom:25px solid #108EE9;
+            border-left:25px solid white;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .box-grey {
+            background: #F6F6F6;
+        }
+        .span-grey {
+            border-left:25px solid #F6F6F6;
+        }
+        .left-grey {
+            border-top:25px solid #F6F6F6;
+            border-bottom:25px solid #F6F6F6;
+            border-left:25px solid white;
+        }
+        .box-pink {
+            background: gray;
+        }
+        .span-pink {
+            border-left:25px solid gray;
+        }
+        .left-pink {
+            border-top:25px solid gray;
+            border-bottom:25px solid gray;
+            border-left:25px solid white;
+        }
+        span{
+            display:block;
+            border-top:25px solid white;
+            border-bottom:25px solid white;
+            border-left:25px solid #108EE9;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="box">
+        <span></span>
+    </div>
+
+    <div class="box">
+        <span></span>
+        <span class="left"></span>
+    </div>
+
+    <div class="box">
+        <span></span>
+        <span class="left"></span>
+    </div>
+
+    <div class="box">
+        <span class="left"></span>
+    </div>
+
+    <div class="stop hide"></div>
+</div>
+<script src="jquery-1.12.3.min.js"></script>
+<script>
+    var array =  [
+        {"name":"待接单","status":"WAIT_ACCEPT","isShadowed":true},
+        {"name":"待发货","status":"WAIT_DELIVER","isShadowed":true,"isCurrentStatus":true},
+        {"name":"验货入库","status":"STOCK_IN"},
+        {"name":"已完成","status":"DELIVERED"}
+    ];
+
+    function showStatus(array) {
+        var box = $('.box');
+
+        if(array.length == 1){
+            $('.stop').append(array[0].name);
+            $('.stop').removeClass('hide');
+            box.addClass('hide');
+        }
+
+        for (var i = 0; i < array.length; i++) {
+            box.eq(i).append(array[i].name);
+            if (array[i].isShadowed && !array[i].isCurrentStatus) {
+
+                box.eq(i).addClass('box-grey');
+                box.eq(i).find('span').addClass('span-grey');
+                box.eq(i).find('.left').addClass('left-grey');
+
+            }else if (array[i].isShadowed && array[i].isCurrentStatus) {
+
+                console.log("待审核");
+                box.eq(i).css("color","#eee");
+
+            } else {
+
+                box.eq(i).addClass('box-pink');
+                box.eq(i).find('span').addClass('span-pink');
+                box.eq(i).find('.left').addClass('left-pink');
+
+            }
+        }
+    }
+    showStatus(array);
+</script>
+</body>
+</html>
